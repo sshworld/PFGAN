@@ -125,6 +125,10 @@ apple/
 landscape/
 *.png
 *.jpg
+*.zip
+
+# Docker
+Dockerfile
 
 # jupyter notebook
 notebooks/
