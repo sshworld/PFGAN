@@ -101,8 +101,8 @@ class Generator(nn.Module):
     
 def generatorImage() :
     
-    # Create the generator
-    netG = Generator(ngpu).to(device)
+    # # Create the generator
+    # netG = Generator(ngpu).to(device)
 
     netG = torch.load(GPATH)
     
@@ -121,7 +121,7 @@ def generatorImage() :
         # Generate fake image batch with G
         fake = netG(noise)
         
-        fixed_noise = torch.randn(64, nz, 1, 1, device=device)
+        fixed_noise = torch.randn(1, nz, 1, 1, device=device)
         fake = netG(fixed_noise).detach().cpu()
         
         img_list = []
@@ -130,10 +130,14 @@ def generatorImage() :
         
         print(real_cpu)
         
+        # cv2.imwrite("../images/test111.png", np.array())
+        
         # Plot the real images
-        plt.axis("off")
         plt.imshow(np.transpose(img_list[-1],(1,2,0)))
-        plt.savefig("test111.png")
+        plt.axis('off'), plt.xticks([]), plt.yticks([])
+        plt.tight_layout()
+        plt.subplots_adjust(left = 0, bottom = 0, right = 1, top = 1, hspace = 0, wspace = 0)
+        plt.savefig("../images/test111.png")
         
 if __name__ == "__main__":
     generatorImage()

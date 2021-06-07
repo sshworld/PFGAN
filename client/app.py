@@ -1,20 +1,24 @@
 import sys
 from flask import Flask, render_template, request, jsonify
 
+import torch
+
 from crop import crop
-from generatorImage import generatorImage
+from generatorImage import Generator, generatorImage
+from makePartOfImage import makePartOfImage
+from changeBackground import changeBackground
+from combineImage import combineImage
 
 app = Flask(__name__)
- 
+
 @app.route('/')
 def main() :
     return render_template('main.html')
 
 @app.route('/index')
 def index():
-    generatorImage()
     return render_template('index.html')
- 
+
 @app.route('/translate', methods=['POST'])
 def translate():
     value = request.form
@@ -33,6 +37,14 @@ def translate():
     img.save('../images/upload_image.png')
 
     crop(x - x0, y - y0, w, h)
+    
+
+    
+    makePartOfImage()
+    
+    changeBackground()
+    
+    combineImage(x - x0, y - y0, w, h)
     
     return jsonify(value.getlist('left'))
 
