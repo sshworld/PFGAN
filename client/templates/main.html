@@ -227,11 +227,13 @@
                 reader.onloadend = function () {
                     var boxData = cropper.getCropBoxData();
                     var canvasData = cropper.getCanvasData();
-                    alert(JSON.stringify(boxData))
                     var base64data = reader.result;
                     var form = $('#uploadForm')[0];
                     var formData = new FormData(form)
-                    formData.append("upload_image", $("#upload_image")[0].files[0]);
+                    formData.append("upload_image", image);
+                    //formData.append("upload_image", $("#upload_image")[0].files[0]);
+                    formData.append("rw", canvasData.width);
+                    formData.append("rh", canvasData.height);
                     formData.append("x", boxData.left);
                     formData.append("y", boxData.top);
                     formData.append("w", boxData.width);
@@ -245,9 +247,7 @@
                         contentType: false,
                         processData : false,
                         success: function (data) {
-                            alert(data)
-                            // $modal.modal('hide');
-                            // $('#uploaded_image').attr('src', data);
+                            window.location = data
                         },
                         error: function (xtr, status, error) {
                             alert(xtr + ":" + status + ":" + error);

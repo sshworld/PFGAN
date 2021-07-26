@@ -31,12 +31,12 @@ def combineImage(x, y, w, h) :
     # cv2.imwrite('../images/combine.png', combine)
     
     
-    img = cv2.imread('../images/upload_image.png')
+    img = cv2.imread('./static/images/upload_image.png')
     
-    content = cv2.imread('../images/test3.png')
+    content = cv2.imread('./static/images/changeBackground.png')
     
     img[y:y+h, x:x+w] = content # 원본 이미지에서 선택 영영만 ROI로 지정 ---⑥
-    cv2.imwrite('../images/conbine.png', img)   # ROI 영역만 파일로 저장 ---⑦
+    cv2.imwrite('./static/images/conbine.png', img)   # ROI 영역만 파일로 저장 ---⑦
     
 if __name__ == "__main__":
     combineImage(50, 50, 121, 121)
