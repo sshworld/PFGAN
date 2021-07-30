@@ -4,10 +4,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def makePartOfImage(folderName, i) :
-    img = cv2.imread('./static/images/' + folderName + '/makeObject' + i + '.png')
+    img = cv2.imread(folderName + '/makeObject' + i + '.png')
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     
-    content = cv2.imread('./static/images/' + folderName + '/crop.png')
+    content = cv2.imread(folderName + '/crop.png')
     content = cv2.cvtColor(content, cv2.COLOR_BGR2RGB)
 
     h, w, c = content.shape
@@ -35,7 +35,7 @@ def makePartOfImage(folderName, i) :
     img2 = cv2.bitwise_and(img1, img)
 
     img3 = cv2.cvtColor(img2, cv2.COLOR_BGR2RGB)
-    cv2.imwrite('./static/images/' + folderName + '/partImage' + i + '.png', img3)
+    cv2.imwrite(folderName + '/partImage' + i + '.png', img3)
     
 if __name__ == "__main__":
     makePartOfImage()

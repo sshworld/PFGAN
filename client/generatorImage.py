@@ -108,7 +108,7 @@ def generatorImage(model, folderName, num) :
 
     netG = torch.load(GPATH)
     
-    img = cv2.imread('./static/images/' + folderName + '/upload_image.png')
+    img = cv2.imread(folderName + '/upload_image.png')
     
     # Create the dataloader
     dataloader = torch.utils.data.DataLoader(img, batch_size=batch_size,
@@ -137,7 +137,7 @@ def generatorImage(model, folderName, num) :
         plt.axis('off'), plt.xticks([]), plt.yticks([])
         plt.tight_layout()
         plt.subplots_adjust(left = 0, bottom = 0, right = 1, top = 1, hspace = 0, wspace = 0)
-        plt.savefig("./static/images/" + folderName + "/makeObject" + str(num) + ".png")
+        plt.savefig(folderName + "/makeObject" + str(num) + ".png")
         
 if __name__ == "__main__":
     generatorImage()

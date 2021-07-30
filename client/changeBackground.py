@@ -1,5 +1,6 @@
 
 from PIL import Image
+from flask.json import load
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -8,7 +9,7 @@ import torch.optim as optim
 from torchvision import transforms, models
 import cv2
 
-def changeBackground(folderName, i) :
+def changeBackground(folderName, imgName, num, count) :
     # get the "features" portion of VGG19 (we will not need the "classifier" portion)
     vgg = models.vgg19(pretrained=True).features
 
@@ -48,10 +49,13 @@ def changeBackground(folderName, i) :
         return image
 
     # Resize style to match content, makes code easier
-    style = load_image('./static/images/' + folderName + '/crop.png').to(device)
+    
+    original = load_image(folderName + '/crop.png').to(device)
+    
+    style = load_image(imgName, shape=original.shape[-2:]).to(device)
 
     # load in content and style image
-    content = load_image('./static/images/' + folderName + '/partImage' + i + '.png', shape=style.shape[-2:]).to(device)
+    content = load_image(folderName + '/partImage' + num + '.png', shape=style.shape[-2:]).to(device)
 
     # helper function for un-normalizing an image 
     # and converting it from a Tensor image to a NumPy image for display
@@ -177,13 +181,13 @@ def changeBackground(folderName, i) :
     
     img = im_convert(target)
     
-    cv2.imwrite('./static/images/' + folderName + '/changeBackground' + i + '.png', 255 * img)
+    cv2.imwrite(folderName + '/changeBackground/' + count + '.png', 255 * img)
     
-    img1 = cv2.imread('./static/images/' + folderName + '/changeBackground' + i + '.png')
+    img1 = cv2.imread(folderName + '/changeBackground/' + count + '.png')
     
     img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)
     
-    cv2.imwrite('./static/images/' + folderName + '/changeBackground' + i + '.png', img1)
+    cv2.imwrite(folderName + '/changeBackground/' + count + '.png', img1)
     
 if __name__ == "__main__":
     changeBackground()
