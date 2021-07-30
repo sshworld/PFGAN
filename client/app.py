@@ -42,7 +42,9 @@ def main() :
 
 @app.route('/index')
 def index():
-    return render_template('index.html')
+    name = request.args.get('name')
+    
+    return render_template('index.html', name = name)
 
 @app.route('/translate', methods=['POST'])
 def translate():
@@ -102,7 +104,7 @@ def translate():
         
     comparison(folderName)
     
-    return url_for('index')
+    return url_for('index', name = folderName)
 
 if __name__ == '__main__':
     Generator(1)
