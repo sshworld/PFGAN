@@ -52,8 +52,6 @@ beta1 = 0.5
 # Number of GPUs available. Use 0 for CPU mode.
 ngpu = 1
 
-GPATH = "../check_point/netG_apple.pt"
-
 # Decide which device we want to run on
 device = torch.device("cuda:0" if (torch.cuda.is_available() and ngpu > 0) else "cpu")
 
@@ -99,14 +97,18 @@ class Generator(nn.Module):
 
 
     
-def generatorImage() :
+def generatorImage(model, folderName, num) :
+    
+    GPATH = "../check_point/netG_" + model + ".pt"
+    
+    print(GPATH)
     
     # Create the generator
     netG = Generator(ngpu).to(device)
 
     netG = torch.load(GPATH)
     
-    img = cv2.imread('./static/images/upload_image.png')
+    img = cv2.imread('./static/images/' + folderName + '/upload_image.png')
     
     # Create the dataloader
     dataloader = torch.utils.data.DataLoader(img, batch_size=batch_size,
@@ -135,7 +137,7 @@ def generatorImage() :
         plt.axis('off'), plt.xticks([]), plt.yticks([])
         plt.tight_layout()
         plt.subplots_adjust(left = 0, bottom = 0, right = 1, top = 1, hspace = 0, wspace = 0)
-        plt.savefig("./static/images/makeObject.png")
+        plt.savefig("./static/images/" + folderName + "/makeObject" + str(num) + ".png")
         
 if __name__ == "__main__":
     generatorImage()

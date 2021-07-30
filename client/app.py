@@ -28,6 +28,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from IPython.display import HTML
 import cv2
+import time
 
 app = Flask(__name__)
 
@@ -41,6 +42,9 @@ def index():
 
 @app.route('/translate', methods=['POST'])
 def translate():
+    
+    modelName = ['apple', 'pepper', 'tomato']
+    
     value = request.form
 
     print(value.getlist('h')[0])
@@ -56,25 +60,39 @@ def translate():
     
     img = request.files['upload_image']
     
-    img.save('./static/images/upload_image.png')
+    now = time.localtime()
+    
+    folderName = str(now.tm_year) + str(now.tm_mon) + str(now.tm_mday) + str(now.tm_hour) + str(now.tm_min)
+    
+    createFolder('./static/images/' + folderName)
+    
+    img.save('./static/images/' + folderName + '/upload_image.png')
 
-    img = Image.open('./static/images/upload_image.png')
+    img = Image.open('./static/images/' + folderName + '/upload_image.png')
 
     img = img.resize((rw, rh))
     
-    img.save('./static/images/upload_image.png')
+    img.save('./static/images/' + folderName + '/upload_image.png')
 
-    crop(x - x0, y - y0, w, h)
+    crop(x - x0, y - y0, w, h, folderName)
     
-    generatorImage()
-    
-    makePartOfImage()
-    
-    changeBackground()
-    
-    combineImage(x - x0, y - y0, w, h)
+    for i, model in enumerate(modelName) :
+        generatorImage(model, folderName, str(i))
+        
+        makePartOfImage(folderName, str(i))
+        
+        changeBackground(folderName, str(i))
+        
+        combineImage(x - x0, y - y0, w, h, folderName, str(i))
     
     return url_for('index')
+
+def createFolder(directory):
+    try:
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+    except OSError:
+        print ('Error: Creating directory. ' +  directory)
 
 if __name__ == '__main__':
     Generator(1)

@@ -8,7 +8,7 @@ import torch.optim as optim
 from torchvision import transforms, models
 import cv2
 
-def changeBackground() :
+def changeBackground(folderName, i) :
     # get the "features" portion of VGG19 (we will not need the "classifier" portion)
     vgg = models.vgg19(pretrained=True).features
 
@@ -48,10 +48,10 @@ def changeBackground() :
         return image
 
     # Resize style to match content, makes code easier
-    style = load_image('./static/images/crop.png').to(device)
+    style = load_image('./static/images/' + folderName + '/crop.png').to(device)
 
     # load in content and style image
-    content = load_image('./static/images/partImage.png', shape=style.shape[-2:]).to(device)
+    content = load_image('./static/images/' + folderName + '/partImage' + i + '.png', shape=style.shape[-2:]).to(device)
 
     # helper function for un-normalizing an image 
     # and converting it from a Tensor image to a NumPy image for display
@@ -177,13 +177,13 @@ def changeBackground() :
     
     img = im_convert(target)
     
-    cv2.imwrite('./static/images/changeBackground.png', 255 * img)
+    cv2.imwrite('./static/images/' + folderName + '/changeBackground' + i + '.png', 255 * img)
     
-    img1 = cv2.imread('./static/images/changeBackground.png')
+    img1 = cv2.imread('./static/images/' + folderName + '/changeBackground' + i + '.png')
     
     img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)
     
-    cv2.imwrite('./static/images/changeBackground.png', img1)
+    cv2.imwrite('./static/images/' + folderName + '/changeBackground' + i + '.png', img1)
     
 if __name__ == "__main__":
     changeBackground()
