@@ -1,0 +1,12 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Flask app</title>
+
+  </head>
+  <body>
+    {% for i in range(count) %} 
+    <a href="/index?name={{name}}&index={{i}}"><img style="width: 300px; height: 300px;" src="../static/images/{{name}}/combine/{{i}}.png" alt="asdf"></a>
+    {% endfor %}
+  </body>
+</html>

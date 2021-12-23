@@ -43,8 +43,18 @@ def main() :
 @app.route('/index')
 def index():
     name = request.args.get('name')
+    index = request.args.get('index')
     
-    return render_template('index.html', name = name)
+    
+    return render_template('index.html', name = name, index = index)
+
+@app.route('/choose')
+def choose():
+    name = request.args.get('name')
+    count = len(os.listdir('./static/images/' + name + '/combine'))
+    print(count)
+
+    return render_template('choose.html', name = name, count = count)
 
 @app.route('/translate', methods=['POST'])
 def translate():
@@ -68,7 +78,9 @@ def translate():
     
     now = time.localtime()
     
-    folderName = './static/images/' + str(now.tm_year) + str(now.tm_mon) + str(now.tm_mday) + str(now.tm_hour) + str(now.tm_min)
+    date = str(now.tm_year) + str(now.tm_mon) + str(now.tm_mday) + str(now.tm_hour) + str(now.tm_min)
+    
+    folderName = './static/images/' + date
     
     createFolder(folderName)
     createFolder(folderName + '/combine')
@@ -104,7 +116,7 @@ def translate():
         
     comparison(folderName)
     
-    return url_for('index', name = folderName)
+    return url_for('choose', name = date)
 
 if __name__ == '__main__':
     Generator(1)
